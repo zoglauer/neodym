@@ -1,0 +1,132 @@
+/* css for the slideshow */
+    
+.nd-ps-main {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.nd-ps-figure {
+  position: absolute;
+  margin: 0;
+  opacity: 0;
+  z-index: -1;
+}
+
+.nd-ps-show-figure {
+  opacity: 1;
+  position: static;
+  transition: 1s opacity;
+}
+
+
+@media screen and (min-width: 700px) {
+  .nd-ps-main {
+    min-height: 20.0em;
+    max-height: 20.0em;
+  }
+  .nd-ps-figures {
+    min-height: 19.0em;
+    max-height: 19.0em;
+    width: 100%;
+    position: relative;
+  }
+  
+  .nd-ps-figure {
+    min-height: 19.0em;
+    max-height: 19.0em;
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .nd-ps-image {
+    max-width: 35%;
+    object-fit:contain;
+    
+    float: left;
+
+    min-height: 19.0em;
+    max-height: 19.0em;
+  }
+  .nd-ps-figure-caption {
+    max-width: 62%;
+    float: right;
+    padding-left: 1.0em;
+    padding-right: 1.0em;
+    
+    font-style: italic;
+  }
+  .nd-ps-title {
+    margin: 0.2em 0 0em;
+    padding-left: 0.5em;
+    font-size: 1.4em;
+    font-style: italic;
+  }
+  .nd-ps-caption {
+    padding-left: 0.5em;
+    font-size: 0.9em;
+    font-style: italic;
+  }
+}
+
+
+@media screen and (max-width: 700px) {
+
+  .nd-ps-figures {
+  }
+
+  .nd-ps-figure {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .nd-ps-image {
+    max-width: calc(100vw - 6.0em);
+    max-height: 19.0em;
+  }
+  
+  .nd-ps-figure-caption {
+    font-style: italic;
+    text-align: center;
+  }
+  .nd-ps-title {
+    margin: 0.2em 0 0em;
+    font-size: 1.2em;
+  }
+  .nd-ps-caption {
+    font-size: 1.0em;
+  }
+}
+
+
+
+
+.nd-ps-backwardsbutton {
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  padding-left: 2em;
+  padding-right: 0.7em;
+}
+
+.nd-ps-forwardsbutton {
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  padding-left: 0.7em;
+  padding-right: 2em;
+}
+
+.nd-ps-forwardstext, .nd-ps-backwardstext {
+  font-size: 3em;
+  padding-bottom: 0.8em;
+  -webkit-user-select: none;  
+  -moz-user-select: none;  
+  -ms-user-select: none;   
+  user-select: none;   
+}

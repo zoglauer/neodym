@@ -1,0 +1,62 @@
+/* css for the slideshow */
+    
+.nd-ps-main {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.nd-ps-figure {
+  position: absolute;
+  margin: 0;
+  opacity: 0;
+}
+
+.nd-ps-show-figure {
+  opacity: 1;
+  position: static;
+  transition: 1s opacity;
+}
+
+
+.nd-ps-image {
+  max-width: calc(100vw - 6.0em);
+  max-height: 30em;
+}
+.nd-ps-figure-caption {
+  font-style: italic;
+  text-align: center;
+}
+.nd-ps-title {
+  margin: 0.2em 0 0em;
+  font-size: 1.2em;
+}
+.nd-ps-caption {
+  font-size: 1.0em;
+}
+
+
+.nd-ps-backwardsbutton {
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  padding-left: 2em;
+  padding-right: 0.7em;
+}
+
+.nd-ps-forwardsbutton {
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  padding-left: 0.7em;
+  padding-right: 2em;
+}
+
+.nd-ps-forwardstext, .nd-ps-backwardstext {
+  font-size: 3em;
+  padding-bottom: 0.8em;
+  -webkit-user-select: none;  
+  -moz-user-select: none;  
+  -ms-user-select: none;   
+  user-select: none;   
+}

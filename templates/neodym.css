@@ -1,0 +1,356 @@
+/* Default neodym template */
+
+
+/* Modification of standard html tags */
+
+html {  
+  --nd-width: 900px;
+  --nd-background: #f3f3f3;
+  --nd-background-title: #333333;
+  --nd-background-highlight: #444444;
+}
+
+body {
+  margin:0;
+  padding:0;
+  height:100%;
+  background: var(--nd-background);
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+  
+  font-size: 1.1em;
+  font-weight: normal;
+  line-height: 1.5;
+  word-wrap: break-word;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 1.0em 0 0em;
+  font-weight: normal;
+}
+h1 {
+  font-size: 1.8em;
+}
+h2 {
+  font-size: 1.5em;
+}
+h3 {
+  font-size: 1.3em;
+  font-style: italic;
+}
+h4 {
+  font-size: 1.2em;
+  font-style: italic;
+}
+h5 {
+  font-size: 1.15em;
+  font-style: italic;
+}
+h6 {
+  font-size: 1.1em;
+  font-style: italic;
+}
+
+li {
+  list-style-type: '\2022\00a0\00a0';
+}
+li li {
+  list-style-type: '\2013\00a0\00a0';
+}
+li li li {
+  list-style-type: '\2013\00a0\00a0';
+}
+
+a {
+  color: var(--nd-background-title); 
+}
+
+pre {
+  background-color: rgba(40, 40, 0, 0.06);
+  margin: 10px 0;
+  overflow: hidden;
+  padding: 15px;
+  white-space: pre-wrap;
+}
+
+
+/* Neodym tags */
+
+@media screen and (min-width: 900px) {
+  
+  #nd-master {
+    min-height:100%;
+    min-width: var(--nd-width);
+    position:relative;
+  }
+  
+  #nd-header {
+    background: var(--nd-background-title);
+    overflow: hidden;
+  }
+  
+  #nd-upper-header-container {
+    display: flex;
+    flex-direction: row;
+  
+    max-width: var(--nd-width);
+    min-width: var(--nd-width);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 0.4em;
+    padding-right: 0.4em;
+  }
+  
+  #nd-logo {
+    padding-top: 2.75em;
+    padding-left: 0.25em;
+    padding-right: 1.0em;
+  
+    min-height: 4.5em;
+    max-height: 4.5em;
+  }
+  
+  #nd-title {
+    color: white;
+    font-size: 3.0em;
+    line-height: 1.0;
+    text-shadow: 4px 4px 8px #000000;
+    padding-top: 0.75em;
+    padding-bottom: 0.25em;
+  }
+  
+  #nd-subtitle {
+    color: white;
+  
+    font-size: 1.2em;
+    line-height: 1.0;
+    text-shadow: 4px 4px 8px #000000;
+    word-spacing: 0.1em;
+    font-style: italic;
+  
+    padding-top: 0em;
+    padding-bottom: 0.25em;
+  }
+  
+  #nd-menubutton {
+    display: none;
+  }
+  
+  #nd-content {
+    padding-left: 0.4em;
+    padding-right: 0.4em;
+    padding-top: 1.0em;
+    /* Same as height in footer-style */
+    padding-bottom: 7.0em;  
+  
+    /* Center the content & don't make it too large */
+    max-width: var(--nd-width);
+    min-width: var(--nd-width);
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  #nd-mainmenu {
+    width:100%;
+  
+    padding-top: 0.5em;
+    font-family: "Helvetica Neue", "Helvetica", Arial, sans-serif;
+  
+    /* Center the content & don't make it too large */ 
+    max-width: var(--nd-width);
+    min-width: var(--nd-width);
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  #nd-mainmenu ul {
+    list-style:none;
+    margin:0;
+    padding:0;
+    text-align:center;
+  }
+  
+  #nd-mainmenu ul #nd-singlemenu {
+    float:left;
+    margin:0;
+    margin-top:0;
+  }
+  
+  #nd-mainmenu ul #nd-singlemenu li {
+    display: block;
+    height: 100%;
+    list-style: none;
+    margin-top: calc(49.0em/90.0);
+    margin-bottom: 0px;
+    padding: 0;
+    position: relative;
+    font-size: 1.1em;
+    font-weight: normal;
+    color: var(--nd-background-title);
+  }
+  
+  #nd-mainmenu ul #nd-singlemenu li.nd-menuactivated {
+    display: block;
+    font-weight: bold;
+    color: black;
+  }
+  
+  #nd-mainmenu ul #nd-singlemenu li a {
+    display:block;
+    margin:0 0 0 3px;
+    background: var(--nd-background);
+    color: inherit;
+    text-decoration:none;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 12px;
+    padding-bottom: 3px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+  }
+  
+  
+  #nd-footer {
+    position:absolute;
+    bottom: 0px;
+    left: 0px;
+    
+    width: 100%; 
+    
+    margin-top: 0.4em;
+    margin-bottom: 3.0em;
+    
+    font-style: italic;
+    font-size: 0.8em;
+    text-align: center;
+  }
+}
+
+
+
+@media screen and (max-width: 900px) {
+  
+  #nd-content {
+    padding-top: 1.0em;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 0.4em;
+    padding-right: 0.4em;
+  }
+  
+  #nd-header {
+    background: var(--nd-background-title);
+  }
+  
+  #nd-logo-container {
+    display: none;
+  }
+  
+  #nd-subtitle {
+    display: none;
+  }
+  
+  #nd-title-container {
+    position: relative;
+    
+    height: 3.6em;
+    min-width: 100%;
+  }
+  
+  #nd-title {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 100%;
+    
+    font-size: 1.8em;
+    font-stretch: expanded;
+    text-align: center;
+    color: white;  
+  }
+  
+  #nd-menubutton {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    
+    background: var(--nd-background-title);
+    height: 3.6em;
+    line-height: 3.6em;
+    width: 3.6em;
+  }
+  
+  #nd-menubutton-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 2.0em;
+    color: white;  
+  }
+  
+  #nd-mainmenu {
+    display: none;
+    position: absolute;
+    z-index: 1000;
+    right: 0px; 
+    top: 3.5em;
+    
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
+    
+    background: var(--nd-background-title);
+  }
+  
+  #nd-mainmenu.nd-mainmenushow {
+    display: inline;
+  }
+  
+  #nd-mainmenu ul {
+    padding: 0;
+    margin: 0;
+  }
+  
+  #nd-mainmenu li {
+    list-style: none;   
+    overflow: hidden;
+    background: var(--nd-background-highlight);
+    margin-top: 2px;
+    margin-bottom: 2px;
+  }
+  
+  #nd-mainmenu a {
+    display: block;
+    text-decoration:none;
+    
+    width: 100%;
+    padding: 5px 10px 5px 10px;
+    
+    cursor: default;
+    
+    color: white;
+    font-size: 1.2em;
+    line-height: 1.7em;
+  }
+  
+  #nd-mainmenu a:visited, #nd-mainmenu a:hover, #nd-mainmenu a:link, #nd-mainmenu a:active {
+    color: white;
+  }
+  
+  #nd-footer {
+    padding-top: 3.0em;
+    padding-bottom: 3.0em;
+    font-style: italic;
+    font-size: 0.8em;
+    text-align: center;
+  }
+  
+}
+
+
+
+
