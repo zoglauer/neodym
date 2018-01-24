@@ -258,6 +258,7 @@ pre {
   
   #nd-title {
     position: absolute;
+    padding-left: 0.4em;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -265,7 +266,6 @@ pre {
     
     font-size: 1.8em;
     font-stretch: expanded;
-    text-align: center;
     color: white;  
   }
   
