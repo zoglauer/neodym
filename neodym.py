@@ -204,6 +204,7 @@ class ZArticle(ZPage):
     Out += "<head>\n"
     Out += "  <meta charset=\"UTF-8\">\n"
     Out += "  <title>" + Title + "</title>\n"
+    Out += "  <meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n"
     Out += "  <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>\n"
     Out += "  <script type=\"text/javascript\" src=\"neodym.js\"></script>\n"
     Out += "  <link rel=\"stylesheet\" type=\"text/css\" href=\"neodym.css\">\n"
