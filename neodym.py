@@ -85,6 +85,7 @@ class ZConfiguration(ZReader):
     super(ZConfiguration, self).__init__()
     self.mTitle = "Neodym"
     self.mSubTitle = ""
+    self.mDescription = ""
     self.mFooter = ""
     self.mMenu = []
     self.mLogo = ""
@@ -99,6 +100,8 @@ class ZConfiguration(ZReader):
       self.mTitle = self.mDictionary["Title"]
     if "SubTitle" in self.mDictionary:
       self.mSubTitle = self.mDictionary["SubTitle"]
+    if "Description" in self.mDictionary:
+      self.mDescription = self.mDictionary["Description"]
     if "Logo" in self.mDictionary:
       self.mLogo = self.mDictionary["Logo"]
     if "Footer" in self.mDictionary:
@@ -123,6 +126,7 @@ class ZConfiguration(ZReader):
     print("Logo: " + self.mLogo)
     print("Title: " + self.mTitle)
     print("SubTitle: " + self.mSubTitle)
+    print("Description: " + self.mSubTitle)
     print("Footer: " + self.mFooter)
     print("ConentDirectory: " + self.mContentDirectory)
     print("TemplateDirectory: " + self.mTemplateDirectory)
@@ -197,15 +201,16 @@ class ZArticle(ZPage):
     return True
       
   
-  def createPage(self, Title, SubTitle, Logo, Footer, Menus):
+  def createPage(self, Title, SubTitle, Description, Logo, Footer, Menus):
     Out  = "<!DOCTYPE html>\n"
     Out += "<html>\n"
     Out += "\n"
     Out += "<head>\n"
     Out += "  <meta charset=\"UTF-8\">\n"
-    Out += "  <title>" + Title + "</title>\n"
     Out += "  <meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n"
-    Out += "  <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>\n"
+    if Description != "":
+      Out += "  <meta name=\"description\" content=\"" + Description + "\">\n"
+    Out += "  <title>" + Title + "</title>\n"
     Out += "  <script type=\"text/javascript\" src=\"neodym.js\"></script>\n"
     Out += "  <link rel=\"stylesheet\" type=\"text/css\" href=\"neodym.css\">\n"
     Out += "  <link rel=\"stylesheet\" type=\"text/css\" href=\"neodym-user.css\">\n"
@@ -240,13 +245,13 @@ class ZArticle(ZPage):
     Out += "        </div>\n"
     Out += "      </div>\n"
     Out += "      <div id=\"nd-mainmenu\">\n"
-    Out += "        <ul>\n"
+    Out += "        <ul id=\"nd-mainmenu-list\">\n"
 
     for Key in Menus:
       if Key == A.mMenuEntry:
-        Out += "          <div id=\"nd-singlemenu\"><li class=\"nd-menuactivated\"><a href=\"" + Menus[Key].mFileName + "\">" + Menus[Key].mMenuTitle + "</a></li></div>\n"
+        Out += "          <li class=\"nd-mainmenu-element nd-mainmenu-element-activated\"><a class=\"nd-mainmenu-element-link\" href=\"" + Menus[Key].mFileName + "\">" + Menus[Key].mMenuTitle + "</a></li>\n"
       else:
-        Out += "          <div id=\"nd-singlemenu\"><li><a href=\"" + Menus[Key].mFileName + "\">" + Menus[Key].mMenuTitle + "</a></li></div>\n"
+        Out += "          <li class=\"nd-mainmenu-element\"><a class=\"nd-mainmenu-element-link\" href=\"" + Menus[Key].mFileName + "\">" + Menus[Key].mMenuTitle + "</a></li>\n"
 
     Out += "        </ul>\n"
     Out += "      </div>\n"
@@ -811,7 +816,7 @@ File.close()
 for A in Articles:
   
   # Create the articles  
-  PageText = A.createPage(Config.mTitle, Config.mSubTitle, Config.mLogo, Config.mFooter, mMenu)
+  PageText = A.createPage(Config.mTitle, Config.mSubTitle, Config.mDescription, Config.mLogo, Config.mFooter, mMenu)
 
   FileName = Config.mTargetDirectory + os.sep + os.path.basename(A.mFileName)
   print(FileName)
