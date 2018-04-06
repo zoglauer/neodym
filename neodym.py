@@ -11,21 +11,22 @@ from bs4 import BeautifulSoup
 
 class ZReader:
   def __init__(self):
-    self.mDictionary = {}
-    self.mBody = ""
     self.mFileName = ""
+    self.mContent = []
+    self.mDictionary = {}
     self.mFiles = []
+    self.mBody = ""
     print("Reader init")
   
 
   def read(self, Name):
     self.mFileName = os.path.basename(Name)
     with open(Name) as File:
-      Content = File.readlines()
-    Content = [X.strip() for X in Content] 
+      self.mContent = File.readlines()
+    self.mContent = [X.strip() for X in self.mContent] 
   
     InBody = False
-    for Line in Content:
+    for Line in self.mContent:
       if InBody == True:
         self.mBody += Line
         self.mBody += "\n"  
@@ -77,6 +78,45 @@ class ZReader:
       return False
 
 
+  def extractSingleTag(self, Name):
+    
+    Start = "<" + Name + ">"
+    End = "</" + Name + ">"
+    
+    Found = False
+    InTag = False
+    
+    Tag = ""
+    
+    # Extract all the lines from where the tag appearsvthe first time including the line where it ends
+    for Line in self.mContent:
+      if Found == True:
+        if InTag == True:
+          self.mBody += Line
+          self.mBody += "\n"
+          if End in Line:
+            InTag = False
+        else:
+          if Start in Line:
+            print("ERROR: Tag appears multiple times")
+            return ""
+      else: 
+        if Start in Line:
+          Found = True
+          InTag = True
+          Tag += Line 
+          Tag += "\n" 
+    
+    if InTag == True:
+      print("ERROR: Tag not closed")
+      return ""
+    
+    # Remove everything to the Start and everything after the End
+    StartIndex = Tag.index(Start) + len(Start)
+    EndIndex = Tag.index(End, StartIndex)
+    
+    return Tag[StartIndex:EndIndex]
+    
 
 # -----------------------------------------------------------------------------------
 
@@ -106,8 +146,8 @@ class ZConfiguration(ZReader):
       self.mLogo = self.mDictionary["Logo"]
     if "Footer" in self.mDictionary:
       self.mFooter = self.mDictionary["Footer"]
-    if "ContentDirectory" in self.mDictionary:
-      self.mContentDirectory = self.mDictionary["ContentDirectory"]
+    if "self.mContentDirectory" in self.mDictionary:
+      self.mself.mContentDirectory = self.mDictionary["self.mContentDirectory"]
     if "TemplateDirectory" in self.mDictionary:
       self.mTemplateDirectory = self.mDictionary["TemplateDirectory"]
     if "TargetDirectory" in self.mDictionary:
@@ -143,6 +183,7 @@ class ZPage(ZReader):
     self.mMenuLevel = 0
     self.mMenuEntry = 0
     self.mMenuTitle = ""
+    self.mBody = ""
   
 
   def assign(self):
@@ -158,7 +199,32 @@ class ZPage(ZReader):
   def read(self, FileName):
     print("Read Page")
     super(ZPage, self).read(FileName)
-    ZPage.assign(self)	
+    ZPage.assign(self)
+    
+    # Parse neody-body
+    InBody = False
+    for Line in self.mContent:
+      if InBody == True:
+        self.mBody += Line
+        self.mBody += "\n"  
+      else: 
+        if Line.startswith("<neodym-body>"):
+          InBody = True
+          self.mBody += Line
+          self.mBody += "\n"          
+        else:
+          if Line.find(":") != -1:
+            Split = Line.split(":", maxsplit=2)
+            if len(Split) == 2 and Split[0].strip() != "" and Split[1].strip() != "":
+              self.mDictionary[Split[0].strip()] = Split[1].strip()
+              print("Added to dictionary: " + Split[0].strip() + ", " + Split[1].strip()) 
+            #else:
+            #  print("Error: Unknown keyword: ", Line)
+    
+    # Remove the <body> & </body> tags
+    self.mBody = self.mBody.replace("<neodym-body>", "")
+    self.mBody = self.mBody.replace("</neodym-body>", "")
+    
     return True
   
   
@@ -177,6 +243,7 @@ class ZArticle(ZPage):
     super(ZArticle, self).__init__()
     self.mCSSFileNames = []
     self.mJavaScriptFileNames = []
+
 
   def assign(self):
     print("Assign Article")
@@ -281,6 +348,38 @@ class ZArticle(ZPage):
 
     return Out
 
+
+
+
+# -----------------------------------------------------------------------------------
+
+class ZBlog(ZPage):
+  def __init__(self):
+    super(ZBlog, self).__init__()
+    self.mDate = ""
+    self.mBlogTitle = []
+    self.mBlogSummary = []
+    self.mBlogBody = []
+
+
+  def assign(self):
+    print("Assign ")
+    if "Date" in self.mDictionary:
+      self.mDate = self.mDictionary["Date"]  
+  
+  
+  def read(self, FileName):
+    print("Read Blog")
+    super(ZBlog, self).read(FileName)
+    ZBlog.assign(self)
+    return True
+  
+  
+  def assimilate(self, Reader):
+    print("Assim Blog")
+    super(ZBlog, self).assimilate(Reader)
+    ZBlog.assign(self)	
+    return True
 
 
 # -----------------------------------------------------------------------------------
