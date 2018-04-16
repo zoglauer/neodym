@@ -13,6 +13,8 @@ import os
 
 # Import neodym files
 from feature import ZFeature
+from reader import ZReader
+from blogentry import ZBlogEntry
 
 # -----------------------------------------------------------------------------------
 
@@ -25,11 +27,11 @@ class ZBlog(ZFeature):
   def apply(self, Article):
     #
     Body = BeautifulSoup(Article.mBody, 'html.parser')
-    Tag = Body.find_all(self.mFeatureTag)
+    Tags = Body.find_all(self.mFeatureTag)
     
-    if len(Tag) == 0:
+    if len(Tags) == 0:
       return
-    if len(Tag) > 1: 
+    if len(Tags) > 1: 
       print("Error: Only one <" + self.mFeatureTag + "> allowed")
       return
 
@@ -38,27 +40,47 @@ class ZBlog(ZFeature):
     if "BlogDirectory" in Article.mDictionary:
       Directory = Article.mDictionary["BlogDirectory"]
 
-    # Read all blog enetries
+    Directory = Article.mFilePath + os.sep + Directory
+    print("A:" + Article.mFilePath)
+    print("D:" + Directory)
+
+    # Read all blog entries
     self.readBlogs(Directory)
     
-    # 
+    print("Number of Blogs: " + str(len(self.mBlogEntries)))
     
+    # 
+    ReplacementText = ""
+    for B in self.mBlogEntries:
+      ReplacementText += B.createPage()
+    
+    print("ReplacementText:")
+    print(ReplacementText)
+    
+    PS = BeautifulSoup(ReplacementText, 'html.parser')
+    Tags[0].replace_with(PS)
+      
+    Article.mBody = Body.prettify();
+
 
   def readBlogs(self, Directory):
+    print("1")
     # Read all files (html)
     for SubDir, Dirs, Files in os.walk(Directory):
+      print("1")
       for File in Files:
+        print("1")
     
         if File.endswith(".html") == False: continue
+        print("1")
   
         FilePath = SubDir + os.sep + File
         print ("Reading %s..." % (FilePath))
-        Reader = ZReader()
-        Reader.read(FilePath)
-        if Reader.has("Type", "BlogEntry"):
-          BlogEntry = ZBlogEntry()
-          BlogEntry.assimilate(Reader) 
-          self.mBlogEntries.append(BlogEntry)
+        Entry = ZBlogEntry()
+        Entry.read(FilePath)
+        if Entry.has("Type", "BlogEntry"):
+          print("1")
+          self.mBlogEntries.append(Entry)
 
 
 

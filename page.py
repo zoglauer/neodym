@@ -23,6 +23,9 @@ class ZPage(ZReader):
   def __init__(self):
     super(ZPage, self).__init__()
     
+    # The type of the file
+    self.mType = ""
+
     # All the files referenced by this page
     self.mFiles = []
 
@@ -48,6 +51,10 @@ class ZPage(ZReader):
   # Extract all additional information from the content into this page
   def assign(self):
     print("Assign Page")
+
+    if "Type" in self.mDictionary:
+      self.mType = self.mDictionary["Type"]
+    print("Type: " + self.mType) 
 
     # Extract figures
     Pattern = re.compile(r'img src=\"(.*?)\"')

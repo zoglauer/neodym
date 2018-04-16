@@ -51,7 +51,6 @@ class ZArticle(ZPage):
     self.mBody = self.extractSingleTag("neodym-body") 
     if self.mBody == "":
       print("ERROR: <neodym-body>...</neodym-body> tag not found in article")
-    print("Body: " + self.mBody) 
 
   
   def read(self, FileName):

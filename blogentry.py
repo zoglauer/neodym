@@ -27,7 +27,19 @@ class ZBlogEntry(ZPage):
   def assign(self):
     print("Assign ZBlogEntry")  
 
-  
+    self.mTitle = self.extractSingleTag("neodym-blog-title") 
+    if self.mTitle == "":
+      print("ERROR: <neodym-blog-title>...</neodym-blog-title> tag not found in blog entry")
+    
+    self.mSummary = self.extractSingleTag("neodym-blog-summary") 
+    if self.mSummary == "":
+      print("ERROR: <neodym-blog-summary>...</neodym-blog-summary> tag not found in blog entry")
+    
+    self.mMain = self.extractSingleTag("neodym-blog-body") 
+    if self.mMain == "":
+      print("ERROR: <neodym-blog-body>...</neodym-blog-body> tag not found in blog entry")
+    
+    
   def read(self, FileName):
     print("Read ZBlogEntry")
     super(ZBlogEntry, self).read(FileName)
@@ -41,85 +53,23 @@ class ZBlogEntry(ZPage):
     ZBlogEntry.assign(self)	
     return True
       
-  
-  def createPage(self, Title, SubTitle, Description, Logo, Footer, Menus):
-    Out  = "<!DOCTYPE html>\n"
-    Out += "<html>\n"
-    Out += "\n"
-    Out += "<head>\n"
-    Out += "  <meta charset=\"UTF-8\">\n"
-    Out += "  <meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n"
-    if Description != "":
-      Out += "  <meta name=\"description\" content=\"" + Description + "\">\n"
-    Out += "  <title>" + Title + "</title>\n"
-    Out += "  <script type=\"text/javascript\" src=\"neodym.js\"></script>\n"
-    Out += "  <link rel=\"stylesheet\" type=\"text/css\" href=\"neodym.css\">\n"
-    Out += "  <link rel=\"stylesheet\" type=\"text/css\" href=\"neodym-user.css\">\n"
-
-    for Name in self.mCSSFileNames:
-      Out += "  <link rel=\"stylesheet\" type=\"text/css\" href=\"" + Name + "\">\n"
-
-    for Name in self.mJavaScriptFileNames:
-      Out += "  <script type=\"text/javascript\" src=\"" + Name + "\"></script>\n"
-
-    Out += "</head>\n"
-    Out += "\n"
-    Out += "<body>\n"
-    Out += "  <div id=\"nd-master\">\n"
-    Out += "    <div id=\"nd-header\">\n"
-    Out += "      <div id=\"nd-upper-header-container\">\n"
-
-    if Logo != "":
-      Out += "        <div id=\"nd-logo-container\">\n"
-      Out += "          <img id=\"nd-logo\" src=\"" + Logo + "\" alt=\"MEGAlib Logo\">\n"
-      Out += "        </div>\n"
-    
-    Out += "        <div id=\"nd-title-container\">\n"
-    Out += "          <div id=\"nd-title\">" + Title + "</div>\n"
-  
-    if SubTitle != "":
-      Out += "          <div id=\"nd-subtitle\">" + SubTitle + "</div>\n"
-
-    Out += "        </div>\n"
-    Out += "        <div id=\"nd-menubutton\" onclick='ToggleSubMenu();'>\n"
-    Out += "          <div id=\"nd-menubutton-text\">&equiv;</div>\n"
-    Out += "        </div>\n"
-    Out += "      </div>\n"
-    Out += "      <div id=\"nd-mainmenu\">\n"
-    Out += "        <ul id=\"nd-mainmenu-list\">\n"
-
-    for Key in Menus:
-      if Key == self.mMenuEntry:
-        Out += "          <li class=\"nd-mainmenu-element nd-mainmenu-element-activated\"><a class=\"nd-mainmenu-element-link\" href=\"" + Menus[Key].mFileName + "\">" + Menus[Key].mMenuTitle + "</a></li>\n"
-      else:
-        Out += "          <li class=\"nd-mainmenu-element\"><a class=\"nd-mainmenu-element-link\" href=\"" + Menus[Key].mFileName + "\">" + Menus[Key].mMenuTitle + "</a></li>\n"
-
-    Out += "        </ul>\n"
-    Out += "      </div>\n"
-    Out += "    </div>\n"
-    Out += "    \n"
-    Out += "    <div id=\"nd-content\" onclick=\"DeactivateSubMenu()\">\n"
-    Out += "\n"
-    Out += "<!-- --- body start --- -->\n"
-    Out += "\n"
-    Out += self.mBody
-    Out += "\n"
-    Out += "<!-- --- body end --- -->\n"
-    Out += "\n"
-    Out += "    </div>\n"
-
-  
-    if Footer != "":
-      Out += "    <div id=\"nd-footer\">\n"
-      Out += "      " + Footer + "<br>\n"
-      Out += "      Powered by <a href=\"https://github.com/zoglauer/neodym\">Neodym</a>\n"
-      Out += "    </div>\n"
-    
+      
+  def createPage(self):
+    Out = "\n"
+    Out += "  <div id=\"nd-blog-title\">\n"
+    Out += self.mTitle
     Out += "  </div>\n"
-    Out += "</body>\n"
-    Out += "\n"
-    Out += "</html>\n"
+
+    Out += "  <div id=\"nd-blog-summary\">\n"
+    Out += self.mSummary
+    Out += "  </div>\n"
+
+    Out += "  <div id=\"nd-blog-body\">\n"
+    Out += self.mMain
+    Out += "  </div>\n"
 
     return Out
+
+
 
 # -----------------------------------------------------------------------------------

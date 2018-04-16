@@ -21,17 +21,22 @@ class ZReader:
   def __init__(self):
     # The file name without path for href's in the webpage
     self.mFileName = ""
+    # The path to the file
+    self.mFilePath = ""
     # The complete file content - line by line
     self.mFileContent = []
     # The main content without the configurations
     self.mMainContent = ""
-    # The dictionary con
+    # The dictionary content
     self.mDictionary = {}
   
   
   # Read the file
   def read(self, FileName):
     self.mFileName = os.path.basename(FileName)
+    self.mFilePath = os.path.dirname(FileName)
+    print(self.mFilePath)
+    print(FileName)
     with open(FileName) as File:
       self.mFileContent = File.readlines()
     self.mFileContent = [X.strip() for X in self.mFileContent] 
@@ -60,6 +65,7 @@ class ZReader:
   # Copy data into this reader
   def assimilate(self, Reader):
     self.mFileName = Reader.mFileName
+    self.mFilePath = Reader.mFilePath
     self.mFileContent = Reader.mFileContent
     self.mMainContent = Reader.mMainContent
     self.mDictionary = Reader.mDictionary
@@ -117,10 +123,6 @@ class ZReader:
     # Remove everything to the Start and everything after the End
     StartIndex = Tag.index(Start) + len(Start)
     EndIndex = Tag.index(End, StartIndex)
-    
-    print("Tag: " + Tag)
-    print("Tag: " + str(StartIndex))
-    print("Tag: " + str(EndIndex))
     
     return Tag[StartIndex:EndIndex]
     
