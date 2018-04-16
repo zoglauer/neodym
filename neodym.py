@@ -16,6 +16,7 @@ from collections import OrderedDict
 from configuration import ZConfiguration
 from reader import ZReader
 from article import ZArticle
+from blog import ZBlog
 from pictureshow import ZPictureShow
 from bibliography import ZBibliography
 
@@ -102,7 +103,6 @@ def getMainIndex(Title, Menus):
 
 
 Config = ZConfiguration()
-Pages = []
 Articles = []
 Bibliographies = []
 MenuTitles = []
@@ -129,26 +129,24 @@ for SubDir, Dirs, Files in os.walk(Config.mContentDirectory):
       Article = ZArticle()
       Article.assimilate(Reader)
       Articles.append(Article)
-      Pages.append(Article)
     if Reader.has("Type", "Bibliography"):
       Bibliography = ZBibliography()
       Bibliography.assimilate(Reader)
       Bibliography.readDBs(Config.mContentDirectory)
       Bibliographies.append(Bibliography)
-      Pages.append(Bibliography)
 
-if len(Pages) == 0:
-  print("Error: No pages found")
+if len(Articles) == 0:
+  print("Error: No articles found")
   sys.exit(1)
 
-for P in Pages:
-  print("Found page with menu title: %s" % (P.mMenuTitle))
+for A in Articles:
+  print("Found page with menu title: %s" % (A.mMenuTitle))
 
 
 # (3) Creating the main menu based on the articles
 mMenu = {}
-for P in Pages:
-  mMenu[P.mMenuEntry] = P
+for A in Articles:
+  mMenu[A.mMenuEntry] = A
   
 mMenu = OrderedDict(sorted(mMenu.items()))
 
@@ -169,6 +167,11 @@ for A in Articles:
   B = ZBibliography()
   B.apply(A)
 
+  # (4c) Blog
+  Blog = ZBlog()
+  Blog.apply(A)
+  
+  
 
 # (5) Start putting it all together and copy all files
 

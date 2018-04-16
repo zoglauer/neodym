@@ -14,58 +14,31 @@ from page import ZPage
 
 # -----------------------------------------------------------------------------------
 
-# And article on the website, containing a main text body, potentially some features, associates CSS and Java script files, as well as a menu entry.
-class ZArticle(ZPage):
+
+# The basic information of a blog entry: title, summary, main text blog
+class ZBlogEntry(ZPage):
   def __init__(self):
-    super(ZArticle, self).__init__()
-    
-    # The menu structure
-    self.mMenuLevel = 0
-    self.mMenuEntry = 0
-    self.mMenuTitle = ""
-    
-    # The main body (contained in neodym-body)
-    self.mBody = ""
-    
-    # An additional, specific CSS for this article 
-    self.mCSSFileNames = []
-    
-    # An additional, specific Javascipt file for this article
-    self.mJavaScriptFileNames = []
+    super(ZBlogEntry, self).__init__()
+    self.mTitle = ""
+    self.mSummary = ""
+    self.mMain = ""
 
 
-  # Assign all additional content from the main text
   def assign(self):
-    print("Assign Article")
-    if "CSS" in self.mDictionary:
-      self.mCSSFileNames.append(self.mDictionary["CSS"])
-    if "JS" in self.mDictionary:
-      self.mJavaScriptFileNames.append(self.mDictionary["JS"])
-    if "MenuLevel" in self.mDictionary:
-      self.mMenuLevel = int(self.mDictionary["MenuLevel"])
-    if "MenuEntry" in self.mDictionary:
-      self.mMenuEntry = int(self.mDictionary["MenuEntry"])
-    if "MenuTitle" in self.mDictionary:
-      self.mMenuTitle = self.mDictionary["MenuTitle"]  
-      
-    self.mBody = self.extractSingleTag("neodym-body") 
-    if self.mBody == "":
-      print("ERROR: <neodym-body>...</neodym-body> tag not found in article")
-    print("Body: " + self.mBody) 
+    print("Assign ZBlogEntry")  
 
   
   def read(self, FileName):
-    print("Read Article")
-    super(ZArticle, self).read(FileName)
-    ZArticle.assign(self)
+    print("Read ZBlogEntry")
+    super(ZBlogEntry, self).read(FileName)
+    ZBlogEntry.assign(self)
     return True
+
   
-  
-  # Assimilate a reader into this page
   def assimilate(self, Reader):
-    print("Assim Article")
-    super(ZArticle, self).assimilate(Reader)
-    ZArticle.assign(self)	
+    print("Assimilate ZBlogEntry")
+    super(ZBlogEntry, self).assimilate(Reader)
+    ZBlogEntry.assign(self)	
     return True
       
   

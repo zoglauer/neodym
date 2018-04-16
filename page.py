@@ -8,68 +8,59 @@
 # -----------------------------------------------------------------------------------
 
 # Import external files
+import re
+import os
 
 # Import neodym files
 from reader import ZReader
 
 # -----------------------------------------------------------------------------------
 
+# A page whcih is part og the menu structure
 class ZPage(ZReader):
+  
+  # Constructor
   def __init__(self):
     super(ZPage, self).__init__()
-    self.mMenuLevel = 0
-    self.mMenuEntry = 0
-    self.mMenuTitle = ""
-    self.mBody = ""
-  
+    
+    # All the files referenced by this page
+    self.mFiles = []
 
-  def assign(self):
-    print("Assign Page")
-    if "MenuLevel" in self.mDictionary:
-      self.mMenuLevel = int(self.mDictionary["MenuLevel"])
-    if "MenuEntry" in self.mDictionary:
-      self.mMenuEntry = int(self.mDictionary["MenuEntry"])
-    if "MenuTitle" in self.mDictionary:
-      self.mMenuTitle = self.mDictionary["MenuTitle"]
   
-  
+  # Read the file
   def read(self, FileName):
     print("Read Page")
     super(ZPage, self).read(FileName)
     ZPage.assign(self)
-    
-    # Parse neody-body
-    InBody = False
-    for Line in self.mContent:
-      if InBody == True:
-        self.mBody += Line
-        self.mBody += "\n"  
-      else: 
-        if Line.startswith("<neodym-body>"):
-          InBody = True
-          self.mBody += Line
-          self.mBody += "\n"          
-        else:
-          if Line.find(":") != -1:
-            Split = Line.split(":", maxsplit=2)
-            if len(Split) == 2 and Split[0].strip() != "" and Split[1].strip() != "":
-              self.mDictionary[Split[0].strip()] = Split[1].strip()
-              print("Added to dictionary: " + Split[0].strip() + ", " + Split[1].strip()) 
-            #else:
-            #  print("Error: Unknown keyword: ", Line)
-    
-    # Remove the <body> & </body> tags
-    self.mBody = self.mBody.replace("<neodym-body>", "")
-    self.mBody = self.mBody.replace("</neodym-body>", "")
-    
+
     return True
   
   
+  # Assimilate a reader into this page
   def assimilate(self, Reader):
-    print("Assim Article")
+    print("Assimilate Reader into Page")
     super(ZPage, self).assimilate(Reader)
     ZPage.assign(self)	
+    
     return True
+
+
+  # Extract all additional information from the content into this page
+  def assign(self):
+    print("Assign Page")
+
+    # Extract figures
+    Pattern = re.compile(r'img src=\"(.*?)\"')
+    self.mFiles = re.findall(Pattern, self.mMainContent)
+    
+    # Extract potential documents
+    Pattern = re.compile(r'href=\"(.*?)\"')
+    Docs = re.findall(Pattern, self.mMainContent)
+    for File in Docs:
+      if os.path.isfile("content" + os.sep + File) == True:
+        self.mFiles.append(File)
+    
+    print("Files: ", self.mFiles)  
 
 
 # -----------------------------------------------------------------------------------

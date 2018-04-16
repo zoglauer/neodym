@@ -14,7 +14,10 @@ from reader import ZReader
 
 # -----------------------------------------------------------------------------------
 
+# Parses all the global configuration parameters
 class ZConfiguration(ZReader):
+  
+  # Constructor
   def __init__(self):
     super(ZConfiguration, self).__init__()
     self.mTitle = "Neodym"
@@ -29,6 +32,7 @@ class ZConfiguration(ZReader):
     self.mTargetPermissions = "a+rX"
     print("Config init")
 
+  
   def assign(self):
     if "Title" in self.mDictionary:
       self.mTitle = self.mDictionary["Title"]
@@ -54,6 +58,7 @@ class ZConfiguration(ZReader):
     super(ZConfiguration, self).read(FileName)
     self.assign()	
     return True
+  
   
   def print(self):
     print("# Configuration of file " + self.mFileName)
