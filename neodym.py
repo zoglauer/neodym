@@ -9,6 +9,7 @@
 
 # Import external files
 import os
+import sys
 import shutil
 from collections import OrderedDict
 
@@ -108,12 +109,34 @@ Bibliographies = []
 MenuTitles = []
 
 
-# (1) Read the configuration file
+# (1) Read and sanity check the configuration file
+
+# (1a) Read it
 if Config.read("neodym.conf") == False:
   print("Error: Unable to read configuation file")
   sys.exit(1)
  
 Config.print()
+
+# (1b) ... and do some sanity checks
+if os.path.isdir(Config.mContentDirectory) == False:
+  print("Error: Unable to find content directory")
+  sys.exit(1)
+ 
+if os.path.isdir(Config.mTemplateDirectory) == False:
+  print("Error: Unable to find template directory")
+  sys.exit(1)
+ 
+if os.path.isfile(Config.mTemplateDirectory + os.sep + "neodym.js") == False:
+  print("Error: The template directory does not contain the templates: \"" + Config.mTemplateDirectory + "\"")
+  sys.exit(1)
+ 
+if Config.mLogo != "" and os.path.isfile(Config.mContentDirectory + os.sep + Config.mLogo) == False:
+  print("Error: Unable to find Logo file")
+  sys.exit(1)
+
+
+
 
 # (2) Read all the content files (html)
 for SubDir, Dirs, Files in os.walk(Config.mContentDirectory):

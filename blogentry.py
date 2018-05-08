@@ -8,6 +8,7 @@
 # -----------------------------------------------------------------------------------
 
 # Import external files
+from datetime import datetime
 
 # Import neodym files
 from page import ZPage
@@ -19,6 +20,7 @@ from page import ZPage
 class ZBlogEntry(ZPage):
   def __init__(self):
     super(ZBlogEntry, self).__init__()
+    self.mDate = ""
     self.mTitle = ""
     self.mSummary = ""
     self.mMain = ""
@@ -26,6 +28,9 @@ class ZBlogEntry(ZPage):
 
   def assign(self):
     print("Assign ZBlogEntry")  
+
+    if "Date" in self.mDictionary:
+      self.mDate = datetime.strptime(self.mDictionary["Date"], '%Y-%m-%d')
 
     self.mTitle = self.extractSingleTag("neodym-blog-title") 
     if self.mTitle == "":
@@ -56,15 +61,20 @@ class ZBlogEntry(ZPage):
       
   def createPage(self):
     Out = "\n"
-    Out += "  <div id=\"nd-blog-title\">\n"
+    
+    Out += "  <div class=\"nd-blog-date\">\n"
+    Out += self.mDate.strftime('%A, %B %d, %Y')
+    Out += "  </div>\n"
+    
+    Out += "  <div class=\"nd-blog-title\">\n"
     Out += self.mTitle
     Out += "  </div>\n"
 
-    Out += "  <div id=\"nd-blog-summary\">\n"
+    Out += "  <div class=\"nd-blog-summary\">\n"
     Out += self.mSummary
     Out += "  </div>\n"
 
-    Out += "  <div id=\"nd-blog-body\">\n"
+    Out += "  <div class=\"nd-blog-body\">\n"
     Out += self.mMain
     Out += "  </div>\n"
 

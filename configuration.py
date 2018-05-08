@@ -44,8 +44,8 @@ class ZConfiguration(ZReader):
       self.mLogo = self.mDictionary["Logo"]
     if "Footer" in self.mDictionary:
       self.mFooter = self.mDictionary["Footer"]
-    if "self.mContentDirectory" in self.mDictionary:
-      self.mself.mContentDirectory = self.mDictionary["self.mContentDirectory"]
+    if "ContentDirectory" in self.mDictionary:
+      self.mContentDirectory = self.mDictionary["ContentDirectory"]
     if "TemplateDirectory" in self.mDictionary:
       self.mTemplateDirectory = self.mDictionary["TemplateDirectory"]
     if "TargetDirectory" in self.mDictionary:
@@ -61,15 +61,15 @@ class ZConfiguration(ZReader):
   
   
   def print(self):
-    print("# Configuration of file " + self.mFileName)
-    print("Logo: " + self.mLogo)
-    print("Title: " + self.mTitle)
-    print("SubTitle: " + self.mSubTitle)
-    print("Description: " + self.mSubTitle)
-    print("Footer: " + self.mFooter)
-    print("ConentDirectory: " + self.mContentDirectory)
+    print("Configuration of file " + self.mFileName)
+    print("Logo:              " + self.mLogo)
+    print("Title:             " + self.mTitle)
+    print("SubTitle:          " + self.mSubTitle)
+    print("Description:       " + self.mSubTitle)
+    print("Footer:            " + self.mFooter)
+    print("ContentDirectory:  " + self.mContentDirectory)
     print("TemplateDirectory: " + self.mTemplateDirectory)
-    print("TargetDirectory: " + self.mTargetDirectory)
+    print("TargetDirectory:   " + self.mTargetDirectory)
     print("TargetPermissions: " + self.mTargetPermissions)
 
 # -----------------------------------------------------------------------------------

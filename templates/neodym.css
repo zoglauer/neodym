@@ -83,6 +83,29 @@ pre {
 
 
 /* Neodym tags */
+.nd-blog-date {
+  padding-top: 2.5rem;
+  font-size: 0.8rem;
+  font-style: italic;
+}
+
+.nd-blog-title {
+  padding-top: 0.5rem;
+  font-size: 1.5rem;
+  font-style: bold;
+}
+
+.nd-blog-summary {
+  padding-top: 0.5rem;
+  font-size: 1.15rem;
+  font-style: italic;
+}
+
+.nd-blog-body {
+  padding-top: 0.5rem;
+  padding-bottom: 1.0rem;
+}
+
 
 @media screen and (min-width: 900px) {
   

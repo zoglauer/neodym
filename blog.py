@@ -82,6 +82,8 @@ class ZBlog(ZFeature):
           print("1")
           self.mBlogEntries.append(Entry)
 
+    # Final sort by date
+    self.mBlogEntries.sort(key=lambda x: x.mDate, reverse=True)
 
 
 # -----------------------------------------------------------------------------------
