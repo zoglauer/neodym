@@ -152,11 +152,6 @@ for SubDir, Dirs, Files in os.walk(Config.mContentDirectory):
       Article = ZArticle()
       Article.assimilate(Reader)
       Articles.append(Article)
-    if Reader.has("Type", "Bibliography"):
-      Bibliography = ZBibliography()
-      Bibliography.assimilate(Reader)
-      Bibliography.readDBs(Config.mContentDirectory)
-      Bibliographies.append(Bibliography)
 
 if len(Articles) == 0:
   print("Error: No articles found")

@@ -9,6 +9,7 @@
 
 # Import external files
 import bibtexparser
+import os
 
 # Import neodym files
 from feature import ZFeature
@@ -74,7 +75,7 @@ class ZBibliography(ZFeature):
     #print("HN:")
     #for s in self.mHighlightNames: print(s)
     
-    self.readDBs(Config.mContentDirectory)
+    self.readDBs(Article.mFilePath)
     
     ReplacementHTML = self.createHTML()
     
