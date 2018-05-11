@@ -9,10 +9,11 @@ html {
   --nd-background-title: #333333;
   --nd-background-highlight: #444444;
   
-  //font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
-  font-size: 13px;
-  font-weight: normal;
+  /* font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif; */
+  font-family: serif;
+  font-size: 1.2rem;
   line-height: 1.5;
+  
   word-wrap: break-word;
 }
 
