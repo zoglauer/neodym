@@ -10,6 +10,8 @@
 # Import external files
 import bibtexparser
 import os
+import sys
+import re
 
 # Import neodym files
 from feature import ZFeature
@@ -23,6 +25,7 @@ class ZBibliography(ZFeature):
     self.mPapersDB = []
     self.mHighlightNames = []
     self.mPapersDBFileNames = ""
+    self.mReplacements = {}
     
 
   def apply(self, Article):
@@ -45,7 +48,27 @@ class ZBibliography(ZFeature):
       print("ERROR: No bib-tex file name found")
       return
   
-  
+    self.addDefaultReplacements()
+    if "PapersReplace" in Article.mDictionary:
+      Text = Article.mDictionary["PapersReplace"]
+      
+      # Extract the brackets
+      Text = re.findall('\(([^)]+)', Text)
+
+      for T in Text:
+        
+        # Extract the strings
+        S = re.findall(r'(?:[^\s,"]|"(?:\\.|[^"])*")+', T)
+        
+        if len(S) != 2:
+          print("ERROR: Not exactly two items in replacmenet text: " + str(len(S)))
+          continue
+
+        # Remove the first and last quote and add it to the replacement texts
+        self.mReplacements[S[0][1:-1]] = S[1][1:-1]
+        
+      print(self.mReplacements)
+        
   
     SplitAuthor = self.mHighlightAuthor.split(",")
     LastName = ""
@@ -190,17 +213,27 @@ class ZBibliography(ZFeature):
     return HTML
 
 
+  def addDefaultReplacements(self):
+    self.mReplacements["{\\\"o}"] = "oe"
+    self.mReplacements["{\\\"u}"] = "oe"
+    self.mReplacements["{\\\"a}"] = "ae"
+    self.mReplacements["{\\\'c}"] = "c"
+    self.mReplacements["{\\\'e}"] = "e"
+    self.mReplacements["{\\`e}"] = "e"
+    self.mReplacements["{\\v c}"] = "c"
+    self.mReplacements["\\#"] = "#"
+    self.mReplacements["``"] = "\""
+    self.mReplacements["\'\'"] = "\""
+    self.mReplacements["{$\\alpha$}"] = "alpha"
+    self.mReplacements["{$\\beta$}"] = "beta"
+    self.mReplacements["{$\gamma$}"] = "gamma"
+
+
   def nicen(self, Text):
-    Text = Text.replace("{\\\"o}", "oe")
-    Text = Text.replace("{\\\"u}", "ue")
-    Text = Text.replace("{\\\"a}", "ae")
-    Text = Text.replace("{\\'c}", "c")
-    Text = Text.replace("{\\`e}", "e")
-    Text = Text.replace("{\\'e}", "e")
-    Text = Text.replace("{$\\alpha$}", "alpha")
-    Text = Text.replace("{$\\beta$}", "beta")
-    Text = Text.replace("{$\\gamma$}", "gamma")
-    Text = Text.replace("{$^{44}$}", "44-")
+        
+    for k, v in self.mReplacements.items():
+      if k in Text:
+        Text = Text.replace(k, v)
 
     for s in "[]{}":
       Text = Text.replace(s, "")
@@ -212,14 +245,23 @@ class ZBibliography(ZFeature):
   
   def nicenJournal(self, Text):
     print("Journal: " + Text)
+    
+    # Replace common journal short cuts
     if Text == "\\apj":
-      return "The Astrophysical Journal"
+      Text = "The Astrophysical Journal"
     if Text == "\\nat":
-      return "Nature"
+      Text = "Nature"
     if Text == "\\nar":
-      return "New Astronomy Reviews"
+      Text = "New Astronomy Reviews"
     if Text == "\\procspie":
-      return "Proceedings of SPIE"
+      Text = "Proceedings of SPIE"
+    
+    # Sometimes the journal contains a link: remove everything between two $\\gt$
+    Text = re.sub('\$\\\\gt\$.*gt\$', '', Text)
+    
+    # Do a final normal nicen
+    Text = self.nicen(Text)
+    
     return Text
 
   
