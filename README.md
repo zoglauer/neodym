@@ -43,10 +43,9 @@ While you are of course free to use whatever way you want to install them, here 
 
 
 ```
-virtualenv -p python3 python-env
-source python-env/bin/activate
-pip install bibtexparser
-pip install bs4
+python3 -m venv python-env
+. python-env/bin/activate
+pip3 install -r Requirements.txt
 ```
 
 ### Creating a configuration file

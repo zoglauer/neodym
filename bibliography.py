@@ -9,6 +9,9 @@
 
 # Import external files
 import bibtexparser
+from bibtexparser.bparser import BibTexParser
+from bibtexparser.customization import convert_to_unicode
+
 import os
 import sys
 import re
@@ -108,13 +111,50 @@ class ZBibliography(ZFeature):
   
   def readDBs(self, Directory):
 
-    with open(Directory + os.sep + self.mPapersDBFileNames) as bibtex_file:
-      bibtex_str = bibtex_file.read()
+    # Test
+    bibtex_str = \
+"""@ARTICLE{Cesar2013,
+  author = {Jean César},
+  title = {An amazing title},
+  year = {2013},
+  month = {jan},
+  volume = {12},
+  pages = {12--23},
+  journal = {Nice Journal},
+  abstract = {This is an abstract. This line should be long enough to test
+     multilines...},
+  comments = {A comment},
+  keywords = {keyword1, keyword2}
+}
+"""
+
+
+    #parser = BibTexParser()
+    #parser.ignore_nonstandard_types = False
+    #parser.homogenize_fields = False
+    #parser.common_strings = False
+    #bib_database = bibtexparser.loads(bibtex_str, parser)
+
+    #aout = bibtexparser.loads(bibtex_str)
+    #print(bib_database.entries)
+
+    #sys.exit(0)
+
+    #with open(Directory + os.sep + self.mPapersDBFileNames) as bibtex_file:
+      #parser = BibTexParser()
+      #parser.customization = convert_to_unicode
+      #parser.common_strings = True
+      #parser.interpolate_string = True
+      #self.mPapersDB = bibtexparser.load(bibtex_file, parser=parser)
+      #bibtex_str = bibtex_file.read()
       
-    self.mPapersDB = bibtexparser.loads(bibtex_str)
+    #self.mPapersDB = bibtexparser.loads(bibtex_str)
     #print(self.mPapersDB.entries)
 
+    with open(Directory + os.sep + self.mPapersDBFileNames) as bibtex_file:
+      self.mPapersDB = bibtexparser.bparser.BibTexParser(common_strings=True).parse_file(bibtex_file)
 
+    print(self.mPapersDB.entries)
 
   def createHTML(self):
     HTML = ""
@@ -191,14 +231,17 @@ class ZBibliography(ZFeature):
 
       else:
         HTML += ", " + Journal
+        Volume = ""
         if "volume" in Article: Volume = Article["volume"]
         if Volume != "":
           HTML += " <b>" + Volume + "</b>"
           if "pages" in Article: Pages = Article["pages"]
           if Pages != "":
             HTML += ": " + Pages
-
+      
+      Year = ""
       if "year" in Article: Year = Article["year"]
+      Month = ""
       if "month" in Article: Month = Article["month"]
       Month = self.nicenMonth(Month)
       
@@ -215,11 +258,36 @@ class ZBibliography(ZFeature):
 
   def addDefaultReplacements(self):
     self.mReplacements["{\\\"o}"] = "oe"
-    self.mReplacements["{\\\"u}"] = "oe"
+    self.mReplacements["{\\\"u}"] = "ue"
     self.mReplacements["{\\\"a}"] = "ae"
     self.mReplacements["{\\\'c}"] = "c"
     self.mReplacements["{\\\'e}"] = "e"
+    self.mReplacements["{\\\'i}"] = "i"
+    self.mReplacements["{\\'o}"] = "o"
+    self.mReplacements["{\\'a}"] = "a"
+
     self.mReplacements["{\\`e}"] = "e"
+    self.mReplacements["{\\`o}"] = "o"
+    self.mReplacements["{\\`a}"] = "a"
+    self.mReplacements["{\\`i}"] = "i"
+    self.mReplacements["{\\'\\i}"] = "i"
+    self.mReplacements["{\\\"\\i}"] = "i"
+    self.mReplacements["{\\O}"] = "o"
+    self.mReplacements["{\\o}"] = "o"
+    self.mReplacements["{\\l}"] = "l"
+    self.mReplacements["{\\L}"] = "L"
+    self.mReplacements["{\\'A}"] = "A"
+    self.mReplacements["{\\~n}"] = "n"
+    self.mReplacements["{\\'n}"] = "n"
+    self.mReplacements["{\\'z}"] = "z"
+    self.mReplacements["{\\'Z}"] = "Z"
+    self.mReplacements["{\\.z}"] = "z"
+    self.mReplacements["{\\.Z}"] = "Z"
+    self.mReplacements["{\\~a}"] = "a"
+    self.mReplacements["{\\v{s}}"] = "s"
+    self.mReplacements["{\\ss}"] = "ss"
+    
+    #self.mReplacements[""] = ""
     self.mReplacements["{\\v c}"] = "c"
     self.mReplacements["\\#"] = "#"
     self.mReplacements["``"] = "\""
@@ -249,6 +317,10 @@ class ZBibliography(ZFeature):
     # Replace common journal short cuts
     if Text == "\\apj":
       Text = "The Astrophysical Journal"
+    if Text == "\\mnras":
+      Text = "Monthly Notices of the Royal Astronomical Society"
+    if Text == "\\aap":
+      Text = "Astronomy & Astrophysics"
     if Text == "\\nat":
       Text = "Nature"
     if Text == "\\nar":
@@ -266,6 +338,12 @@ class ZBibliography(ZFeature):
 
   
   def nicenMonth(self, Text):
+    Text = Text.lower()
+    if len(Text) >= 3:
+      Text = Text[0:3]
+    else:
+      return ""
+  
     if Text == "jan":
       return "1"
     if Text == "feb":
@@ -274,7 +352,7 @@ class ZBibliography(ZFeature):
       return "3"
     if Text == "apr":
       return "4"
-    if Text == "mai":
+    if Text == "mai" or Text == "may":
       return "5"
     if Text == "jun":
       return "6"
