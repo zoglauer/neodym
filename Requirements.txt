@@ -1,0 +1,4 @@
+# Required software
+
+bibtexparser
+bs4
