@@ -74,14 +74,6 @@ The just run neodym:
 python3 neodym/neodym.py
 ```
 
-# Implementation notes
-
-## The pages
-
-### ZReader
-
-* Reads the file and stores t
-* 
 
 
 
