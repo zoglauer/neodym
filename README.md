@@ -1,4 +1,4 @@
-# Neodym - a static website creator
+# Neodym - a simple static website creator
 
 ## Overview
 
